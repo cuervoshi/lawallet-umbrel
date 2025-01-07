@@ -1,0 +1,133 @@
+version: "3.8"
+
+services:
+  api-gateway:
+    image: lawallet/api-gateway
+    build: ./api-gateway
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      MODULE_NAME: api-gateway
+      DEBUG: ndk:*,api-gateway:*
+      PORT: 3000
+      NODE_ENV: production
+      NOSTR_RELAYS: ws://nostream:8008
+      URLX_URI: http://urlx:3000
+      CARD_URI: http://card:3000
+      LEDGER_URI: http://ledger:3000
+    depends_on:
+      - nostream
+      - urlx
+      - card
+      - ledger
+
+  urlx:
+    image: lawallet/urlx
+    build: ./urlx
+    restart: always
+    volumes:
+      - ./urlx:/app
+      - /lnd:/lnd:ro
+    environment:
+      MODULE_NAME: urlx
+      DEBUG: ndk:*,urlx:*
+      PORT: 3000
+      NODE_ENV: production
+      LND_REST_ENDPOINT: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
+      LND_REST_CERT: /lnd/tls.cert
+      LND_REST_MACAROON: /lnd/data/chain/bitcoin/$APP_BITCOIN_NETWORK/admin.macaroon
+
+  card:
+    image: lawallet/card
+    build: ./card
+    restart: always
+    volumes:
+      - ./prisma/card:/app/prisma
+    environment:
+      DATABASE_URL: postgresql://lawallet:password@card-db/lawallet
+    depends_on:
+      - card-db
+
+  card-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: lawallet
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: lawallet
+    volumes:
+      - card-db-data:/var/lib/postgresql/data
+
+  ledger:
+    image: lawallet/ledger
+    build: ./ledger
+    restart: always
+    volumes:
+      - ./prisma/ledger:/app/prisma
+    environment:
+      DATABASE_URL: postgresql://lawallet:password@ledger-db/lawallet
+    depends_on:
+      - ledger-db
+
+  ledger-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: lawallet
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: lawallet
+    volumes:
+      - ledger-db-data:/var/lib/postgresql/data
+
+  nostream:
+    image: lawallet/nostream
+    build: ./nostream
+    restart: always
+    volumes:
+      - ./nostream/.nostr:/app/.nostr
+      - ./nostream/postgresql.conf:/postgresql.conf:ro
+    environment:
+      DB_HOST: nostream-db
+      DB_PORT: 5432
+      DB_USER: nostream
+      DB_PASSWORD: password
+      DB_NAME: nostream
+    depends_on:
+      - nostream-db
+
+  nostream-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: nostream
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nostream
+    volumes:
+      - nostream-db-data:/var/lib/postgresql/data
+
+  nostream-migrate:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./nostream:/app
+    environment:
+      DATABASE_URI: postgresql://nostream:password@nostream-db/nostream
+    entrypoint: >
+      sh -c "npm install --no-save knex pg &&
+             npx knex migrate:latest"
+    depends_on:
+      - nostream-db
+
+  nostream-cache:
+    image: redis:7-alpine
+    command: redis-server --loglevel warning --requirepass nostr_ts_relay
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "nostr_ts_relay", "ping"]
+      interval: 5s
+      retries: 3
+    volumes:
+      - nostream-cache-data:/data
+
+volumes:
+  card-db-data:
+  ledger-db-data:
+  nostream-db-data:
+  nostream-cache-data:

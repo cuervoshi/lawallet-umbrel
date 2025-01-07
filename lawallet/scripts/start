@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -euo pipefail
+
+echo "Starting environment setup..."
+
+HERE="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
+
+env_file="${HERE}/.env"
+nostream_settings="${HERE}/nostream/.nostr/settings.yaml"
+
+generate_key_pair() {
+  key_data="$(openssl ecparam -name secp256k1 -genkey | openssl ec -text -noout -conv_form compressed 2> /dev/null | grep '^ ')"
+
+  priv_key="$(echo "${key_data}" | head -n3 | tr -cd 0123456789abcdef)"
+  pub_key="$(echo "${key_data}" | tail -n3 | tr -cd 0123456789abcdef | tail -c+3)"
+
+  echo "$(echo -n $priv_key | tail -c 64):${pub_key}"
+}
+
+if [ ! -f "${env_file}" ]; then
+  echo "Generando archivo .env..."
+  cp "${HERE}/.env.example" "${env_file}"
+
+  ledger_key_pair=$(generate_key_pair)
+  urlx_key_pair=$(generate_key_pair)
+  card_key_pair=$(generate_key_pair)
+
+  ledger_pub_key="${ledger_key_pair#*:}"
+  ledger_priv_key="${ledger_key_pair%:*}"
+  urlx_pub_key="${urlx_key_pair#*:}"
+  urlx_priv_key="${urlx_key_pair%:*}"
+  card_pub_key="${card_key_pair#*:}"
+  card_priv_key="${card_key_pair%:*}"
+
+  sed -i -e "s|LEDGER_PRIVATE_KEY='.*'|LEDGER_PRIVATE_KEY='${ledger_priv_key}'|g" "${env_file}"
+  sed -i -e "s|LEDGER_PUBLIC_KEY='.*'|LEDGER_PUBLIC_KEY='${ledger_pub_key}'|g" "${env_file}"
+  sed -i -e "s|URLX_PRIVATE_KEY='.*'|URLX_PRIVATE_KEY='${urlx_priv_key}'|g" "${env_file}"
+  sed -i -e "s|URLX_PUBLIC_KEY='.*'|URLX_PUBLIC_KEY='${urlx_pub_key}'|g" "${env_file}"
+  sed -i -e "s|CARD_PRIVATE_KEY='.*'|CARD_PRIVATE_KEY='${card_priv_key}'|g" "${env_file}"
+  sed -i -e "s|CARD_PUBLIC_KEY='.*'|CARD_PUBLIC_KEY='${card_pub_key}'|g" "${env_file}"
+else
+  echo ".env file already exists. Skipping..."
+fi
+
+if [ ! -f "${nostream_settings}" ]; then
+  echo "Copying Nostream default settings..."
+  cp "${HERE}/nostream/.nostr/settings.example.yaml" "${nostream_settings}"
+else
+  echo "Nostream configuration already exists. Skipping..."
+fi
+
+echo "Running migrations..."
+
+
+docker compose up nostream-migrate
+
+docker compose run --rm card npx prisma migrate deploy
+
+docker compose run --rm ledger npx prisma migrate deploy
+
+echo "Raising core services..."
+
+docker compose up -d
+
+echo "Services started successfully."

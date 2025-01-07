@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -euo pipefail
+
+echo "Stopping services..."
+
+docker compose down
+
+echo "All services have been stopped successfully."
