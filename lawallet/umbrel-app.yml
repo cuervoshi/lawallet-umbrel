@@ -1,6 +1,6 @@
 manifestVersion: 1
 id: lawallet
-category: bitcoin
+category: Development
 name: LaWallet
 version: "1.0.0"
 tagline: Modular Bitcoin and Lightning Network App
