@@ -1,12 +1,20 @@
-version: "3.8"
+version: "3.7"
 
 services:
+  app_proxy:
+    image: getumbrel/proxy:1.0.1
+    restart: always
+    environment:
+      # El formato es: <app-id>_<docker-service-name>_1
+      APP_HOST: lawallet_api-gateway_1
+      APP_PORT: 3000
+    depends_on:
+      - api-gateway
+
   api-gateway:
     image: lawallet/api-gateway
     build: ./api-gateway
     restart: always
-    ports:
-      - "3000:3000"
     environment:
       MODULE_NAME: api-gateway
       DEBUG: ndk:*,api-gateway:*
@@ -102,19 +110,6 @@ services:
       POSTGRES_DB: nostream
     volumes:
       - nostream-db-data:/var/lib/postgresql/data
-
-  nostream-migrate:
-    image: node:18-alpine
-    working_dir: /app
-    volumes:
-      - ./nostream:/app
-    environment:
-      DATABASE_URI: postgresql://nostream:password@nostream-db/nostream
-    entrypoint: >
-      sh -c "npm install --no-save knex pg &&
-             npx knex migrate:latest"
-    depends_on:
-      - nostream-db
 
   nostream-cache:
     image: redis:7-alpine
