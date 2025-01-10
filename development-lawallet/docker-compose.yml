@@ -1,5 +1,11 @@
 version: "3.8"
 services:
+  app_proxy:
+    environment:
+      APP_HOST: urlx_web_1
+      APP_PORT: 3000
+      PROXY_AUTH_ADD: "false"
+
   app:
     image: ferpa708/test:latest
     ports:
