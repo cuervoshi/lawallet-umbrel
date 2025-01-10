@@ -8,6 +8,7 @@ services:
 
   web:
     image: ferpa708/test:latest
+    user: "1001:1001"
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - ${APP_LIGHTNING_NODE_DATA_DIR}:/app/lnd:ro
@@ -38,7 +39,3 @@ services:
     command: redis-server --save 20 1
     volumes:
       - cache:/data
-
-volumes:
-  cache:
-    driver: local
