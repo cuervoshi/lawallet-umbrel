@@ -23,8 +23,8 @@ services:
       LEDGER_PUBLIC_KEY: "c585d68572463bbdfd0147441a363061bd85a14175695ffd8dbd03a33b57c45a"
       NOSTR_WRITE_RELAY: "wss://relay.damus.io"
       LND_HOST: "${APP_LIGHTNING_NODE_IP}:${APP_BITCOIN_RPC_PORT}"
-      LND_CERT: "/data/.lnd/tls.cert"
-      LND_MACAROON: "/data/.lnd/data/chain/bitcoin/${APP_BITCOIN_NETWORK}/admin.macaroon"
+      LND_CERT: "/lnd/tls.cert"
+      LND_MACAROON: "/lnd/data/chain/bitcoin/${APP_BITCOIN_NETWORK}/admin.macaroon"
       ACCEPTED_BASE_FEE: 2000
       ACCEPTED_FEE_PERCENT: 0.003
     depends_on:
