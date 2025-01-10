@@ -1,128 +1,47 @@
-version: "3.7"
-
+version: "3.8"
 services:
-  app_proxy:
-    image: getumbrel/proxy:1.0.1
-    restart: always
-    environment:
-      # El formato es: <app-id>_<docker-service-name>_1
-      APP_HOST: lawallet_api-gateway_1
-      APP_PORT: 3000
-    depends_on:
-      - api-gateway
-
-  api-gateway:
-    image: lawallet/api-gateway
-    build: ./api-gateway
-    restart: always
-    environment:
-      MODULE_NAME: api-gateway
-      DEBUG: ndk:*,api-gateway:*
-      PORT: 3000
-      NODE_ENV: production
-      NOSTR_RELAYS: ws://nostream:8008
-      URLX_URI: http://urlx:3000
-      CARD_URI: http://card:3000
-      LEDGER_URI: http://ledger:3000
-    depends_on:
-      - nostream
-      - urlx
-      - card
-      - ledger
-
-  urlx:
-    image: lawallet/urlx
-    build: ./urlx
-    restart: always
+  app:
+    image: ferpa708/urlx:latest
+    ports:
+      - 3008:3008
     volumes:
       - ./urlx:/app
       - /lnd:/lnd:ro
+    env_file:
+      - .env
     environment:
+      NODE_ENV: production
+      REDIS_URI: redis://cache:6379
       MODULE_NAME: urlx
       DEBUG: ndk:*,urlx:*
-      PORT: 3000
-      NODE_ENV: production
-      LND_REST_ENDPOINT: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
-      LND_REST_CERT: /lnd/tls.cert
-      LND_REST_MACAROON: /lnd/data/chain/bitcoin/$APP_BITCOIN_NETWORK/admin.macaroon
-
-  card:
-    image: lawallet/card
-    build: ./card
-    restart: always
-    volumes:
-      - ./prisma/card:/app/prisma
-    environment:
-      DATABASE_URL: postgresql://lawallet:password@card-db/lawallet
+      PORT: 3008
+      NOSTR_PRIVATE_KEY: 1b0e0c73b4fbf4e74c2337279fd371db09309fe00aa06695d3ff728972d39664
+      NOSTR_PUBLIC_KEY: f57d0e93625495b568a2dbb30a7fd6a29e836d92b8ba4f0cef6cf12353b3ba43
+      NOSTR_RELAYS: wss://relay.damus.io,wss://relay.hodl.ar,wss://nostr.wine,wss://offchain.pub,wss://nostr-pub.wellorder.net,wss://nos.lol
+      LEDGER_PUBLIC_KEY: c585d68572463bbdfd0147441a363061bd85a14175695ffd8dbd03a33b57c45a
+      NOSTR_WRITE_RELAY: wss://relay.damus.io
+      LND_HOST: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
+      LND_CERT: /lnd/tls.cert
+      LND_MACAROON: /lnd/data/chain/bitcoin/$APP_BITCOIN_NETWORK/admin.macaroon
+      ACCEPTED_BASE_FEE: 2000
+      ACCEPTED_FEE_PERCENT: 0.003
     depends_on:
-      - card-db
-
-  card-db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: lawallet
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: lawallet
-    volumes:
-      - card-db-data:/var/lib/postgresql/data
-
-  ledger:
-    image: lawallet/ledger
-    build: ./ledger
-    restart: always
-    volumes:
-      - ./prisma/ledger:/app/prisma
-    environment:
-      DATABASE_URL: postgresql://lawallet:password@ledger-db/lawallet
-    depends_on:
-      - ledger-db
-
-  ledger-db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: lawallet
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: lawallet
-    volumes:
-      - ledger-db-data:/var/lib/postgresql/data
-
-  nostream:
-    image: lawallet/nostream
-    build: ./nostream
-    restart: always
-    volumes:
-      - ./nostream/.nostr:/app/.nostr
-      - ./nostream/postgresql.conf:/postgresql.conf:ro
-    environment:
-      DB_HOST: nostream-db
-      DB_PORT: 5432
-      DB_USER: nostream
-      DB_PASSWORD: password
-      DB_NAME: nostream
-    depends_on:
-      - nostream-db
-
-  nostream-db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: nostream
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: nostream
-    volumes:
-      - nostream-db-data:/var/lib/postgresql/data
-
-  nostream-cache:
+      - cache
+    networks:
+      - umbrel_default
+  cache:
     image: redis:7-alpine
-    command: redis-server --loglevel warning --requirepass nostr_ts_relay
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "nostr_ts_relay", "ping"]
-      interval: 5s
-      retries: 3
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1
     volumes:
-      - nostream-cache-data:/data
-
+      - cache:/data
+    networks:
+      - umbrel_default
 volumes:
-  card-db-data:
-  ledger-db-data:
-  nostream-db-data:
-  nostream-cache-data:
+  cache:
+    driver: local
+networks:
+  umbrel_default:
+    external: true
