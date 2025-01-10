@@ -9,8 +9,8 @@ services:
   web:
     image: ferpa708/test:latest
     volumes:
-      - "${APP_DATA_DIR}/data:/data"
-      - "${APP_LIGHTNING_NODE_DATA_DIR}:/data/.lnd"
+      - ${APP_DATA_DIR}/data:/data
+      - ${APP_LIGHTNING_NODE_DATA_DIR}:/lnd:ro
     environment:
       NODE_ENV: "production"
       REDIS_URI: "redis://cache:6379"
