@@ -7,8 +7,6 @@ services:
     volumes:
       - ./urlx:/app
       - /lnd:/lnd:ro
-    env_file:
-      - .env
     environment:
       NODE_ENV: production
       REDIS_URI: redis://cache:6379
