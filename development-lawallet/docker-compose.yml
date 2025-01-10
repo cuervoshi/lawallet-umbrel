@@ -10,7 +10,7 @@ services:
     image: ferpa708/test:latest
     volumes:
       - ${APP_DATA_DIR}/data:/data
-      - ${APP_LIGHTNING_NODE_DATA_DIR}:/lnd:ro
+      - ${APP_LIGHTNING_NODE_DATA_DIR}:/app/lnd:ro
     environment:
       NODE_ENV: "production"
       REDIS_URI: "redis://cache:6379"
@@ -23,8 +23,8 @@ services:
       LEDGER_PUBLIC_KEY: "c585d68572463bbdfd0147441a363061bd85a14175695ffd8dbd03a33b57c45a"
       NOSTR_WRITE_RELAY: "wss://relay.damus.io"
       LND_HOST: "${APP_LIGHTNING_NODE_IP}:${APP_LIGHTNING_NODE_GRPC_PORT}"
-      LND_CERT: "/lnd/tls.cert"
-      LND_MACAROON: "/lnd/data/chain/bitcoin/${APP_BITCOIN_NETWORK}/admin.macaroon"
+      LND_CERT: "/app/lnd/tls.cert"
+      LND_MACAROON: "/app/lnd/data/chain/bitcoin/${APP_BITCOIN_NETWORK}/admin.macaroon"
       ACCEPTED_BASE_FEE: 2000
       ACCEPTED_FEE_PERCENT: 0.003
     depends_on:
