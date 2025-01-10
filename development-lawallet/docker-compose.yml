@@ -5,8 +5,8 @@ services:
     ports:
       - 3008:3008
     volumes:
-      - ./urlx:/app
-      - /lnd:/lnd:ro
+      - ${APP_DATA_DIR}/data:/app
+      - ${APP_LIGHTNING_NODE_DATA_DIR}:/lnd:ro
     environment:
       NODE_ENV: production
       REDIS_URI: redis://cache:6379
@@ -18,7 +18,7 @@ services:
       NOSTR_RELAYS: wss://relay.damus.io,wss://relay.hodl.ar,wss://nostr.wine,wss://offchain.pub,wss://nostr-pub.wellorder.net,wss://nos.lol
       LEDGER_PUBLIC_KEY: c585d68572463bbdfd0147441a363061bd85a14175695ffd8dbd03a33b57c45a
       NOSTR_WRITE_RELAY: wss://relay.damus.io
-      LND_HOST: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
+      LND_HOST: $APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
       LND_CERT: /lnd/tls.cert
       LND_MACAROON: /lnd/data/chain/bitcoin/$APP_BITCOIN_NETWORK/admin.macaroon
       ACCEPTED_BASE_FEE: 2000
