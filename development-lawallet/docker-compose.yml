@@ -29,8 +29,6 @@ services:
       ACCEPTED_FEE_PERCENT: 0.003
     depends_on:
       - cache
-    networks:
-      - umbrel_default
 
   cache:
     image: redis:7-alpine
@@ -40,11 +38,7 @@ services:
     command: redis-server --save 20 1
     volumes:
       - cache:/data
-    networks:
-      - umbrel_default
+
 volumes:
   cache:
     driver: local
-networks:
-  umbrel_default:
-    external: true
