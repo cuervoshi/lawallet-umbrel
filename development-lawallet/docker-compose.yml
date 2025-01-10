@@ -3,7 +3,7 @@ services:
   app:
     image: ferpa708/test:latest
     ports:
-      - 3008:3000
+      - 3000:3000
     volumes:
       - ${APP_DATA_DIR}/data:/app
       - ${APP_LIGHTNING_NODE_DATA_DIR}:/lnd:ro
