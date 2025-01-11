@@ -1,9 +1,9 @@
 #!/bin/bash
 
-ENV_FILE="${APP_DATA_DIR}/development-urlx/data/.env"
+ENV_FILE="/data/.env"
 
 if [ ! -f "$ENV_FILE" ]; then
-    echo "Generating .env file..."
+    echo "Generating persistent keys for the first time..."
 
     NOSTR_PRIVATE_KEY=$(openssl rand -hex 32)
     NOSTR_PUBLIC_KEY=$(echo -n "$NOSTR_PRIVATE_KEY" | sha256sum | awk '{print $1}')
@@ -13,12 +13,12 @@ NOSTR_PRIVATE_KEY=$NOSTR_PRIVATE_KEY
 NOSTR_PUBLIC_KEY=$NOSTR_PUBLIC_KEY
 EOF
 
-    echo ".env file generated at: $ENV_FILE"
-else
-    echo ".env file already exists. Skipping key generation."
+    echo "Keys saved to $ENV_FILE."
 fi
 
-echo "Generated .env content:"
-cat "$ENV_FILE"
+source "$ENV_FILE"
 
-exit 0
+export NOSTR_PRIVATE_KEY
+export NOSTR_PUBLIC_KEY
+
+echo "Keys exported: PRIVATE_KEY=$NOSTR_PRIVATE_KEY, PUBLIC_KEY=$NOSTR_PUBLIC_KEY"
