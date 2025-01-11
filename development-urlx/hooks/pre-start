@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ENV_FILE="${APP_DATA_DIR}/data/.env"
+ENV_FILE="${APP_DATA_DIR}/development-urlx/data/.env"
 
 if [ ! -f "$ENV_FILE" ]; then
     echo "Generating .env file..."
