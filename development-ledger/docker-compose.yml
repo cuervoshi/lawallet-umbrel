@@ -18,7 +18,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - "${APP_DATA_DIR}/data/prisma:/var/lib/postgresql/data"
+      - "${APP_DATA_DIR}/data/prisma:/data/prisma"
 
   web:
     image: lawallet/ledger:latest
