@@ -1,6 +1,7 @@
 #!/bin/bash
 
-ENV_FILE="../.env"
+HERE="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
+ENV_FILE="${HERE}/.env"
 
 if [ ! -f "$ENV_FILE" ]; then
     echo "Generating .env file..."
