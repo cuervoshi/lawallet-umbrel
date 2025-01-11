@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ENV_FILE="/data/.env"
+ENV_FILE="./data/.env"
 
 if [ ! -f "$ENV_FILE" ]; then
     echo "Generating persistent keys for the first time..."
