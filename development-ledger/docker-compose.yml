@@ -12,13 +12,14 @@ services:
     image: postgres:15
     restart: always
     environment:
+      PGDATA: /var/lib/postgresql/data
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: lawallet-extension
     ports:
       - 5432:5432
     volumes:
-      - "${APP_DATA_DIR}/data/prisma:/data/prisma"
+      - "${APP_DATA_DIR}/data/postgres:/var/lib/postgresql/data"
 
   web:
     image: lawallet/ledger:latest
