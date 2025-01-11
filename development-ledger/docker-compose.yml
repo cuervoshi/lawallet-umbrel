@@ -30,9 +30,9 @@ services:
       DATABASE_URL: "postgresql://root:root@postgres/lawallet-extension"
       NOSTR_PRIVATE_KEY: "${LAWALLET_LEDGER_PRIVATE_KEY}"
       NOSTR_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
-      NOSTR_RELAYS: "ws://umbrel.local:4848"
+      NOSTR_RELAYS: "wss://relay.hodl.ar"
       MINTER_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
-      NOSTR_WRITE_RELAY: "ws://umbrel.local:4848"
+      NOSTR_WRITE_RELAY: "wss://relay.hodl.ar"
     depends_on:
       - postgres
     restart: "on-failure"
