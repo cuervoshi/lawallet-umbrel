@@ -1,8 +1,8 @@
 manifestVersion: 1
-id: development-lawallet
+id: development-front
 category: Development
-name: LaWallet
-version: "1.0.1"
+name: LaWallet Front
+version: "1.0.0"
 tagline: Modular Bitcoin and Lightning Network App
 description: >-
   LaWallet is a modular application composed of multiple microservices
@@ -21,7 +21,7 @@ dependencies:
 repo: https://github.com/lawalletio/test-environment
 support: https://github.com/lawalletio/test-environment/issues
 icon: https://app.lawallet.ar/favicon.ico
-port: 3009
+port: 8001
 gallery:
   - 1.jpg
   - 2.jpg
