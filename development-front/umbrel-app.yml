@@ -2,7 +2,7 @@ manifestVersion: 1
 id: development-front
 category: Development
 name: LaWallet Front
-version: "1.0.0"
+version: "0.5.0"
 tagline: Modular Bitcoin and Lightning Network App
 description: >-
   LaWallet is a modular application composed of multiple microservices
