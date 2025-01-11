@@ -8,6 +8,7 @@ services:
 
   web:
     image: ferpa708/test:latest
+    user: root
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - ${APP_LIGHTNING_NODE_DATA_DIR}:/app/lnd:ro
