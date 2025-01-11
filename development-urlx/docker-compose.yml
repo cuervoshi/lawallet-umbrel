@@ -18,8 +18,6 @@ services:
       MODULE_NAME: "urlx"
       DEBUG: "ndk:*,urlx:*"
       PORT: 3009
-      NOSTR_PRIVATE_KEY: "1b0e0c73b4fbf4e74c2337279fd371db09309fe00aa06695d3ff728972d39664"
-      NOSTR_PUBLIC_KEY: "f57d0e93625495b568a2dbb30a7fd6a29e836d92b8ba4f0cef6cf12353b3ba43"
       NOSTR_RELAYS: "wss://relay.damus.io,wss://relay.hodl.ar,wss://nostr.wine,wss://offchain.pub,wss://nostr-pub.wellorder.net,wss://nos.lol"
       LEDGER_PUBLIC_KEY: "c585d68572463bbdfd0147441a363061bd85a14175695ffd8dbd03a33b57c45a"
       NOSTR_WRITE_RELAY: "wss://relay.damus.io"
