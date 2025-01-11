@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ENV_FILE="./data/.env"
+ENV_FILE="${EXPORTS_APP_DIR}/.env"
 
 if [ ! -f "$ENV_FILE" ]; then
     echo "Generating persistent keys for the first time..."
