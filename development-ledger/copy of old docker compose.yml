@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: development-ledger_web_1
+      APP_PORT: 3088
+      PROXY_AUTH_ADD: "false"
+
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    restart: always
+    environment:
+      DATABASE_HOST: localhost
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: lawallet-extension
+    ports:
+      - 5432:5432
+    volumes:
+      - "${APP_DATA_DIR}/data/prisma:/data"
+
+  web:
+    image: lawallet/ledger:latest
+    environment:
+      NODE_ENV: production
+      MODULE_NAME: "ledger"
+      DEBUG: "ndk:*,ledger:*"
+      DATABASE_URL: "postgresql://root:root@postgres/lawallet-extension"
+      NOSTR_PRIVATE_KEY: "${LAWALLET_LEDGER_PRIVATE_KEY}"
+      NOSTR_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
+      NOSTR_RELAYS: "wss://relay.hodl.ar"
+      MINTER_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
+      NOSTR_WRITE_RELAY: "wss://relay.hodl.ar"
+    depends_on:
+      - postgres
+    restart: "on-failure"
+    stop_grace_period: "1m"
+    init: true
