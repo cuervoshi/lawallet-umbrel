@@ -2,16 +2,27 @@
 
 ENV_FILE="${EXPORTS_APP_DIR}/.env"
 
+generate_key_pair() {
+    key_data=$(openssl ecparam -name secp256k1 -genkey | openssl ec -text -noout -conv_form=compressed 2> /dev/null | grep '^ ')
+
+    priv_key=$(echo "${key_data}" | head -n3 | tr -cd 0123456789abcdef)
+    pub_key=$(echo "${key_data}" | tail -n3 | tr -cd 0123456789abcdef | tail -c+3)
+
+    echo "${priv_key}:${pub_key}"
+}
+
 if [ ! -f "$ENV_FILE" ]; then
     echo "Generating persistent keys for the first time..."
 
     # Generating keys for LAWALLET_LEDGER
-    LAWALLET_LEDGER_PRIVATE_KEY=$(openssl rand -hex 32)
-    LAWALLET_LEDGER_PUBLIC_KEY=$(echo -n "$LAWALLET_LEDGER_PRIVATE_KEY" | sha256sum | awk '{print $1}')
+    ledger_key_pair=$(generate_key_pair)
+    LAWALLET_LEDGER_PRIVATE_KEY="${ledger_key_pair%:*}"
+    LAWALLET_LEDGER_PUBLIC_KEY="${ledger_key_pair#*:}"
 
     # Generating keys for LAWALLET_MINTER
-    LAWALLET_MINTER_PRIVATE_KEY=$(openssl rand -hex 32)
-    LAWALLET_MINTER_PUBLIC_KEY=$(echo -n "$LAWALLET_MINTER_PRIVATE_KEY" | sha256sum | awk '{print $1}')
+    minter_key_pair=$(generate_key_pair)
+    LAWALLET_MINTER_PRIVATE_KEY="${minter_key_pair%:*}"
+    LAWALLET_MINTER_PUBLIC_KEY="${minter_key_pair#*:}"
 
     cat <<EOF > "$ENV_FILE"
 LAWALLET_LEDGER_PRIVATE_KEY=$LAWALLET_LEDGER_PRIVATE_KEY
