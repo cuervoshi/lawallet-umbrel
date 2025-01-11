@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ENV_FILE="${APP_DATA_DIR}/data/.env"
+ENV_FILE="${EXPORTS_APP_DIR}/.env"
 
 if [ ! -f "$ENV_FILE" ]; then
     echo "Generating .env file..."
