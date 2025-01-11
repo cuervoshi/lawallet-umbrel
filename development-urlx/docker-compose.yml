@@ -7,7 +7,7 @@ services:
       PROXY_AUTH_ADD: "false"
 
   web:
-    image: ferpa708/test:latest
+    image: ferpa708/urlx:latest
     user: root
     volumes:
       - ${APP_DATA_DIR}/data:/data
