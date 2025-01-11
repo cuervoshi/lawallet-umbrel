@@ -7,7 +7,7 @@ services:
       PROXY_AUTH_ADD: "false"
 
   web:
-    image: ferpa708/urlx:latest
+    image: ferpa708/test:latest
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - ${APP_LIGHTNING_NODE_DATA_DIR}:/app/lnd:ro
