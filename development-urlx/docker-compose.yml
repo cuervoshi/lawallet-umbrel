@@ -20,9 +20,9 @@ services:
       PORT: 3009
       NOSTR_PRIVATE_KEY: "${LAWALLET_MINTER_PRIVATE_KEY}"
       NOSTR_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
-      NOSTR_RELAYS: "ws://nostr-relay_relay_1:4848"
+      NOSTR_RELAYS: "ws://nostr-relay_app_proxy_1:4848"
       LEDGER_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
-      NOSTR_WRITE_RELAY: "ws://nostr-relay_relay_1:4848"
+      NOSTR_WRITE_RELAY: "ws://nostr-relay_app_proxy_1:4848"
       LND_HOST: "${APP_LIGHTNING_NODE_IP}:${APP_LIGHTNING_NODE_GRPC_PORT}"
       LND_CERT: "/app/lnd/tls.cert"
       LND_MACAROON: "/app/lnd/data/chain/bitcoin/${APP_BITCOIN_NETWORK}/admin.macaroon"

@@ -66,9 +66,9 @@ services:
       DATABASE_URL: "postgresql://root:root@postgres:5432/lawallet-extension"
       NOSTR_PRIVATE_KEY: "${LAWALLET_LEDGER_PRIVATE_KEY}"
       NOSTR_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
-      NOSTR_RELAYS: "ws://nostr-relay_relay_1:4848"
+      NOSTR_RELAYS: "ws://nostr-relay_app_proxy_1:4848"
       MINTER_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
-      NOSTR_WRITE_RELAY: "ws://nostr-relay_relay_1:4848"
+      NOSTR_WRITE_RELAY: "ws://nostr-relay_app_proxy_1:4848"
     depends_on:
       postgres:
         condition: service_healthy
