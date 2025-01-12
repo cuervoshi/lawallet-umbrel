@@ -13,3 +13,8 @@ services:
     environment:
       NODE_ENV: "production"
       PORT: 8001
+      LEDGER_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
+      URLX_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
+      NOSTR_RELAYS: "ws://nostr-relay_app_proxy_1:4848"
+      API_ENDPOINT: "http://development-urlx_web_1:3009"
+      FEDERATION_ID: "test"
