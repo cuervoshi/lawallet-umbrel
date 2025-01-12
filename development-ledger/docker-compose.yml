@@ -45,18 +45,16 @@ services:
 
   ledger-seed:
     image: node:18-alpine3.16
-    profiles:
-      - seed
     environment:
       DATABASE_URL: "postgresql://lawallet:lawallet@postgres:5432/lawallet"
     entrypoint:
       [
         "sh",
         "-c",
-        'cd code && npm install --no-save --quiet prisma@5.2.0 && npx prisma generate && npx --yes ts-node --esm -O {\"module\":\"es2020\"} prisma/seed.mts',
+        'if [ -f /code/seed.marker ]; then echo ''Seed already executed. Skipping.''; exit 0; fi && cd code && npm install --no-save --quiet prisma@5.2.0 && npx prisma generate && npx --yes ts-node --esm -O {"module":"es2020"} prisma/seed.mts && touch /code/seed.marker',
       ]
     volumes:
-      - ${APP_DATA_DIR}/data/prisma:/code/prisma
+      - seed-marker:/code
     depends_on:
       postgres:
         condition: service_healthy
