@@ -1,8 +1,8 @@
 manifestVersion: 1
 id: development-ledger
 category: Development
-name: LaWallet Ledger
-version: "0.5.01"
+name: LaWallet Core
+version: "0.5.0"
 tagline: LaWallet Backend
 icon: https://raw.githubusercontent.com/lawalletio/ledger/f5e220a5cda91c805ed97a567ae9bbc8eb3169e6/umbrel-app/public/icon.svg
 description: >-

@@ -17,12 +17,13 @@ description: >-
 developer: LaWallet
 dependencies:
   - development-ledger
+  - development-urlx
 website: https://github.com/lawalletio/test-environment
 repo: https://github.com/lawalletio/test-environment
 support: https://github.com/lawalletio/test-environment/issues
 icon: https://raw.githubusercontent.com/lawalletio/ledger/f5e220a5cda91c805ed97a567ae9bbc8eb3169e6/umbrel-app/public/icon.svg
 port: 8001
 gallery:
-  - 1.jpg
-  - 2.jpg
-  - 3.jpg
+  - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/1.png
+  - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/2.png
+  - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/3.png

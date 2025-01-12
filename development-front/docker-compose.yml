@@ -2,11 +2,11 @@ version: "3.8"
 services:
   app_proxy:
     environment:
-      APP_HOST: development-front_web_1
+      APP_HOST: development-front_app_1
       APP_PORT: 8001
       PROXY_AUTH_ADD: "false"
 
-  web:
+  app:
     image: ferpa708/web:latest
     volumes:
       - ${APP_DATA_DIR}/data:/data

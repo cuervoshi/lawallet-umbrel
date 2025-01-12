@@ -2,11 +2,11 @@ version: "3.8"
 services:
   app_proxy:
     environment:
-      APP_HOST: development-urlx_web_1
+      APP_HOST: development-urlx_app_1
       APP_PORT: 3009
       PROXY_AUTH_ADD: "false"
 
-  web:
+  app:
     image: ferpa708/urlx:latest
     user: root
     volumes:

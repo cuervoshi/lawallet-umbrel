@@ -3,12 +3,12 @@ version: "3.8"
 services:
   app_proxy:
     environment:
-      APP_HOST: development-ledger_web_1
+      APP_HOST: development-ledger_app_1
       APP_PORT: 3088
       PROXY_AUTH_ADD: "false"
 
-  postgres:
-    container_name: postgres
+  ledger-db:
+    container_name: ledger-db
     image: postgres:15
     restart: always
     environment:
@@ -30,7 +30,7 @@ services:
   ledger-migrate:
     image: node:18-alpine3.16
     environment:
-      DATABASE_URL: "postgresql://lawallet:lawallet@postgres:5432/lawallet"
+      DATABASE_URL: "postgresql://lawallet:lawallet@ledger-db:5432/lawallet"
     entrypoint:
       [
         "sh",
@@ -40,13 +40,13 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/prisma:/code/prisma
     depends_on:
-      postgres:
+      ledger-db:
         condition: service_healthy
 
   ledger-seed:
     image: node:18-alpine3.16
     environment:
-      DATABASE_URL: "postgresql://lawallet:lawallet@postgres:5432/lawallet"
+      DATABASE_URL: "postgresql://lawallet:lawallet@ledger-db:5432/lawallet"
     entrypoint:
       [
         "sh",
@@ -57,25 +57,25 @@ services:
       - ${APP_DATA_DIR}/seed.marker:/code
       - ${APP_DATA_DIR}/data/prisma:/code/prisma
     depends_on:
-      postgres:
+      ledger-db:
         condition: service_healthy
       ledger-migrate:
         condition: service_completed_successfully
 
-  web:
+  app:
     image: lawallet/ledger:latest
     environment:
       NODE_ENV: production
       MODULE_NAME: "ledger"
       DEBUG: "ndk:*,ledger:*"
-      DATABASE_URL: "postgresql://lawallet:lawallet@postgres:5432/lawallet"
+      DATABASE_URL: "postgresql://lawallet:lawallet@ledger-db:5432/lawallet"
       NOSTR_PRIVATE_KEY: "${LAWALLET_LEDGER_PRIVATE_KEY}"
       NOSTR_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
       NOSTR_RELAYS: "ws://nostr-relay_app_proxy_1:4848"
       MINTER_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
       NOSTR_WRITE_RELAY: "ws://nostr-relay_app_proxy_1:4848"
     depends_on:
-      postgres:
+      ledger-db:
         condition: service_healthy
       ledger-migrate:
         condition: service_completed_successfully
