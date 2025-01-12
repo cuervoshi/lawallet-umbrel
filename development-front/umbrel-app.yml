@@ -20,7 +20,7 @@ dependencies:
 website: https://github.com/lawalletio/test-environment
 repo: https://github.com/lawalletio/test-environment
 support: https://github.com/lawalletio/test-environment/issues
-icon: https://app.lawallet.ar/favicon.ico
+icon: https://raw.githubusercontent.com/lawalletio/ledger/f5e220a5cda91c805ed97a567ae9bbc8eb3169e6/umbrel-app/public/icon.svg
 port: 8001
 gallery:
   - 1.jpg
