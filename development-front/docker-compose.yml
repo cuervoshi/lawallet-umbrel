@@ -7,15 +7,18 @@ services:
       PROXY_AUTH_ADD: "false"
 
   web:
+    build:
+      context: https://github.com/lawalletio/lawallet-web.git#umbrel
+      dockerfile: Dockerfile
+      args:
+        LEDGER_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
+        URLX_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
+        NOSTR_RELAYS: "ws://nostr-relay_app_proxy_1:4848"
+        API_ENDPOINT: "http://development-urlx_web_1:3009"
+        FEDERATION_ID: "test"
     image: ferpa708/web:latest
     volumes:
       - ${APP_DATA_DIR}/data:/data
-    args:
-      NEXT_PUBLIC_LEDGER_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
-      NEXT_PUBLIC_URLX_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
-      NEXT_PUBLIC_NOSTR_RELAYS: "ws://nostr-relay_app_proxy_1:4848"
-      NEXT_PUBLIC_API_ENDPOINT: "http://development-urlx_web_1:3009"
-      NEXT_PUBLIC_FEDERATION_ID: "test"
     environment:
       NODE_ENV: "production"
       PORT: 8001
