@@ -8,7 +8,6 @@ services:
 
   app:
     image: ferpa708/urlx:latest
-    container_name: lawallet_urlx
     user: root
     volumes:
       - ${APP_DATA_DIR}/data:/data

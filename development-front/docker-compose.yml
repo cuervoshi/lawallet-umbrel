@@ -8,7 +8,6 @@ services:
 
   app:
     image: ferpa708/web:latest
-    container_name: lawallet_front
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
