@@ -55,6 +55,7 @@ services:
       ]
     volumes:
       - ${APP_DATA_DIR}/seed.marker:/code
+      - ${APP_DATA_DIR}/data/prisma:/code/prisma
     depends_on:
       postgres:
         condition: service_healthy
