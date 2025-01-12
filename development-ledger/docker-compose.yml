@@ -54,7 +54,7 @@ services:
         'if [ -f /code/seed.marker ]; then echo ''Seed already executed. Skipping.''; exit 0; fi && cd code && npm install --no-save --quiet prisma@5.2.0 && npx prisma generate && npx --yes ts-node --esm -O {"module":"es2020"} prisma/seed.mts && touch /code/seed.marker',
       ]
     volumes:
-      - seed-marker:/code
+      - ${APP_DATA_DIR}/seed-marker:/code
     depends_on:
       postgres:
         condition: service_healthy
