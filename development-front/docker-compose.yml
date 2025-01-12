@@ -8,6 +8,7 @@ services:
 
   app:
     image: ferpa708/web:latest
+    container_name: lawallet_front
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
@@ -16,5 +17,5 @@ services:
       NEXT_PUBLIC_LEDGER_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
       NEXT_PUBLIC_URLX_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
       NEXT_PUBLIC_NOSTR_RELAYS: "ws://umbrel.local:4848"
-      NEXT_PUBLIC_API_ENDPOINT: "http://umbrel.local:3009"
+      NEXT_PUBLIC_API_ENDPOINT: "http://umbrel.local:8000"
       NEXT_PUBLIC_FEDERATION_ID: "test"

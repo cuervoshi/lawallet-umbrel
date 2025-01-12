@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  app_proxy:
+    environment:
+      APP_HOST: development-gateway_app_1
+      APP_PORT: 8000
+      PROXY_AUTH_ADD: "false"
+
+  app:
+    image: lawallet/api-gateway
+    container_name: lawallet_gateway
+    restart: always
+    environment:
+      MODULE_NAME: api-gateway
+      DEBUG: ndk:*,api-gateway:*
+      PORT: 8000
+      NODE_ENV: production
+      NOSTR_RELAYS: ws://nostr-relay_app_proxy_1:4848
+      NOSTR_WRITE_RELAY: ws://nostr-relay_app_proxy_1:4848
+      URLX_URI: http://lawallet_urlx:3009
+      CARD_URI: http://card:3000
+      MONITOR_URI: http://monitor:3000
+      LEDGER_PUBLIC_KEY: ${LAWALLET_LEDGER_PUBLIC_KEY}
+      MINTER_PUBLIC_KEY: ${LAWALLET_MINTER_PUBLIC_KEY}
+      URLX_PUBLIC_KEY: ${LAWALLET_MINTER_PUBLIC_KEY}
+    healthcheck:
+      test:
+        ["CMD-SHELL", "wget http://localhost:3000/health -q -O - > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 360s

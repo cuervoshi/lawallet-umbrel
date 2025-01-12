@@ -64,6 +64,7 @@ services:
 
   app:
     image: lawallet/ledger:latest
+    container_name: lawallet_ledger
     environment:
       NODE_ENV: production
       MODULE_NAME: "ledger"

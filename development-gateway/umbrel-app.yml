@@ -1,0 +1,28 @@
+manifestVersion: 1
+id: development-gateway
+category: Development
+name: LaWallet Gateway
+version: "0.5.0"
+tagline: Modular Bitcoin and Lightning Network App
+description: >-
+  LaWallet is a modular application composed of multiple microservices
+  designed to provide advanced functionality for interacting with Bitcoin and
+  the Lightning Network. It includes services for transaction management,
+  Lightning node connectivity, integration with Nostr, and wallet and account
+  management.
+
+
+  Built for scalability and flexibility, LaWallet enables users to access
+  robust tools while supporting the Lightning Network and related technologies.
+developer: LaWallet
+website: https://github.com/lawalletio/test-environment
+dependencies:
+  - development-ledger
+repo: https://github.com/lawalletio/test-environment
+support: https://github.com/lawalletio/test-environment/issues
+icon: https://raw.githubusercontent.com/lawalletio/ledger/f5e220a5cda91c805ed97a567ae9bbc8eb3169e6/umbrel-app/public/icon.svg
+port: 8000
+gallery:
+  - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/1.png
+  - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/2.png
+  - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/3.png
