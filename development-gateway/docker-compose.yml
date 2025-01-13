@@ -16,7 +16,7 @@ services:
       NODE_ENV: production
       NOSTR_RELAYS: ws://nostr-relay_app_proxy_1:4848
       NOSTR_WRITE_RELAY: ws://nostr-relay_app_proxy_1:4848
-      URLX_URI: http://umbrel.local:3009
+      URLX_URI: http://development-urlx_app_proxy_1:3009
       CARD_URI: http://card:3000
       MONITOR_URI: http://monitor:3000
       LEDGER_PUBLIC_KEY: ${LAWALLET_LEDGER_PUBLIC_KEY}
