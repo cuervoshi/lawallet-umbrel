@@ -2,7 +2,7 @@ version: "3.8"
 services:
   app_proxy:
     environment:
-      APP_HOST: development-front_app_1
+      APP_HOST: development-webapp_app_1
       APP_PORT: 8001
       PROXY_AUTH_ADD: "false"
 

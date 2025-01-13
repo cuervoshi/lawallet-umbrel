@@ -1,7 +1,7 @@
 manifestVersion: 1
-id: development-urlx
+id: development-webapp
 category: Development
-name: LaWallet Lightning
+name: LaWallet Web App
 version: "0.5.0"
 tagline: Modular Bitcoin and Lightning Network App
 description: >-
@@ -15,14 +15,14 @@ description: >-
   Built for scalability and flexibility, LaWallet enables users to access
   robust tools while supporting the Lightning Network and related technologies.
 developer: LaWallet
-website: https://github.com/lawalletio/test-environment
 dependencies:
-  - lightning
   - development-core
+  - development-lightning
+website: https://github.com/lawalletio/test-environment
 repo: https://github.com/lawalletio/test-environment
 support: https://github.com/lawalletio/test-environment/issues
 icon: https://raw.githubusercontent.com/lawalletio/ledger/f5e220a5cda91c805ed97a567ae9bbc8eb3169e6/umbrel-app/public/icon.svg
-port: 3009
+port: 8001
 gallery:
   - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/1.png
   - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/2.png
