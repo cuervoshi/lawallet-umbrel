@@ -1,0 +1,108 @@
+version: "3.8"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: development-ledger_app_1
+      APP_PORT: 8000
+      PROXY_AUTH_ADD: "false"
+
+  ledger-db:
+    container_name: ledger-db
+    image: postgres:15
+    restart: always
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_USER: lawallet
+      POSTGRES_PASSWORD: lawallet
+      POSTGRES_DB: lawallet
+    ports:
+      - 5432:5432
+    volumes:
+      - "${APP_DATA_DIR}/data/postgres:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lawallet"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 360s
+
+  ledger-migrate:
+    image: node:18-alpine3.16
+    environment:
+      DATABASE_URL: "postgresql://lawallet:lawallet@ledger-db:5432/lawallet"
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        "cd code && npm install --no-save --quiet prisma@5.2.0 && npx prisma migrate deploy",
+      ]
+    volumes:
+      - ${APP_DATA_DIR}/data/prisma:/code/prisma
+    depends_on:
+      ledger-db:
+        condition: service_healthy
+
+  ledger-seed:
+    image: node:18-alpine3.16
+    environment:
+      DATABASE_URL: "postgresql://lawallet:lawallet@ledger-db:5432/lawallet"
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        'if [ -f /code/seed.marker ]; then echo ''Seed already executed. Skipping.''; exit 0; fi && cd code && npm install --no-save --quiet prisma@5.2.0 && npx prisma generate && npx --yes ts-node --esm -O {\"module\":\"es2020\"} prisma/seed.mts && touch /code/seed.marker',
+      ]
+    volumes:
+      - ${APP_DATA_DIR}/seed.marker:/code
+      - ${APP_DATA_DIR}/data/prisma:/code/prisma
+    depends_on:
+      ledger-db:
+        condition: service_healthy
+      ledger-migrate:
+        condition: service_completed_successfully
+
+  ledger:
+    image: lawallet/ledger:latest
+    environment:
+      NODE_ENV: production
+      MODULE_NAME: "ledger"
+      DEBUG: "ndk:*,ledger:*"
+      DATABASE_URL: "postgresql://lawallet:lawallet@ledger-db:5432/lawallet"
+      NOSTR_PRIVATE_KEY: "${LAWALLET_LEDGER_PRIVATE_KEY}"
+      NOSTR_PUBLIC_KEY: "${LAWALLET_LEDGER_PUBLIC_KEY}"
+      NOSTR_RELAYS: "ws://nostr-relay_app_proxy_1:4848"
+      MINTER_PUBLIC_KEY: "${LAWALLET_MINTER_PUBLIC_KEY}"
+      NOSTR_WRITE_RELAY: "ws://nostr-relay_app_proxy_1:4848"
+    depends_on:
+      ledger-db:
+        condition: service_healthy
+      ledger-migrate:
+        condition: service_completed_successfully
+    restart: "on-failure"
+    stop_grace_period: "1m"
+    init: true
+
+  app:
+    image: lawallet/api-gateway
+    restart: always
+    environment:
+      MODULE_NAME: api-gateway
+      DEBUG: ndk:*,api-gateway:*
+      PORT: 8000
+      NODE_ENV: production
+      NOSTR_RELAYS: ws://nostr-relay_app_proxy_1:4848
+      NOSTR_WRITE_RELAY: ws://nostr-relay_app_proxy_1:4848
+      URLX_URI: http://development-urlx_app_proxy_1:3009
+      CARD_URI: http://card:3000
+      MONITOR_URI: http://monitor:3000
+      LEDGER_PUBLIC_KEY: ${LAWALLET_LEDGER_PUBLIC_KEY}
+      MINTER_PUBLIC_KEY: ${LAWALLET_MINTER_PUBLIC_KEY}
+      URLX_PUBLIC_KEY: ${LAWALLET_MINTER_PUBLIC_KEY}
+    healthcheck:
+      test:
+        ["CMD-SHELL", "wget http://localhost:3000/health -q -O - > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 360s
