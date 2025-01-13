@@ -8,7 +8,7 @@ services:
 
   app:
     image: ferpa708/urlx:latest
-    user: "1000:1000"
+    user: "1001:1001"
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - ${APP_LIGHTNING_NODE_DATA_DIR}:/app/lnd:ro
@@ -41,7 +41,7 @@ services:
       - "6379:6379"
     command: redis-server --save 20 1
     volumes:
-      - ${APP_DATA_DIR}/data/redis:/data
+      - ${APP_DATA_DIR}/data/redis:/data/redis
 
 volumes:
   cache:
