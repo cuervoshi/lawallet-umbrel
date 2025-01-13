@@ -28,6 +28,7 @@ services:
       LND_MACAROON: "/app/lnd/data/chain/bitcoin/${APP_BITCOIN_NETWORK}/admin.macaroon"
       ACCEPTED_BASE_FEE: 2000
       ACCEPTED_FEE_PERCENT: 0.003
+      BASE_URL: http://localhost:3009
     restart: "on-failure"
     stop_grace_period: "1m"
     init: true
