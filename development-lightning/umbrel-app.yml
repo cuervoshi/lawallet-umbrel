@@ -1,7 +1,7 @@
 manifestVersion: 1
-id: development-gateway
+id: development-lightning
 category: Development
-name: LaWallet Gateway
+name: LaWallet Lightning
 version: "0.5.0"
 tagline: Modular Bitcoin and Lightning Network App
 description: >-
@@ -17,11 +17,12 @@ description: >-
 developer: LaWallet
 website: https://github.com/lawalletio/test-environment
 dependencies:
-  - development-ledger
+  - lightning
+  - development-core
 repo: https://github.com/lawalletio/test-environment
 support: https://github.com/lawalletio/test-environment/issues
 icon: https://raw.githubusercontent.com/lawalletio/ledger/f5e220a5cda91c805ed97a567ae9bbc8eb3169e6/umbrel-app/public/icon.svg
-port: 8000
+port: 3009
 gallery:
   - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/1.png
   - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/2.png
