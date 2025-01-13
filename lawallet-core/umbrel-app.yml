@@ -1,5 +1,5 @@
 manifestVersion: 1
-id: development-core
+id: lawallet-core
 category: Development
 name: LaWallet Core
 version: "0.5.0"

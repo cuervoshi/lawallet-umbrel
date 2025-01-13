@@ -1,5 +1,5 @@
 manifestVersion: 1
-id: development-webapp
+id: lawallet-webapp
 category: Development
 name: LaWallet Web App
 version: "0.5.0"
@@ -8,8 +8,8 @@ description: >-
   LaWallet front end interface
 developer: La Crypta
 dependencies:
-  - development-core
-  - development-lightning
+  - lawallet-core
+  - lawallet-lightning
 website: https://lawallet.io
 repo: https://github.com/lawalletio/lawallet-web
 support: https://t.me/lacryptaok

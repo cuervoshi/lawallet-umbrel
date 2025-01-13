@@ -3,7 +3,7 @@ version: "3.8"
 services:
   app_proxy:
     environment:
-      APP_HOST: development-core_app_1
+      APP_HOST: lawallet-core_app_1
       APP_PORT: 8000
       PROXY_AUTH_ADD: "false"
 
@@ -93,7 +93,7 @@ services:
       NODE_ENV: production
       NOSTR_RELAYS: ws://nostr-relay_app_proxy_1:4848
       NOSTR_WRITE_RELAY: ws://nostr-relay_app_proxy_1:4848
-      URLX_URI: http://development-lightning_app_proxy_1:3009
+      URLX_URI: http://lawallet-lightning_app_proxy_1:3009
       CARD_URI: http://card:3000
       MONITOR_URI: http://monitor:3000
       LEDGER_PUBLIC_KEY: ${LAWALLET_LEDGER_PUBLIC_KEY}
