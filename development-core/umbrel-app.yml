@@ -13,7 +13,7 @@ dependencies:
   - nostr-relay
 repo: https://github.com/lawalletio/ledger
 support: https://t.me/lacryptaok
-port: 3088
+port: 8000
 gallery:
   - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/1.png
   - https://raw.githubusercontent.com/lawalletio/ledger/refs/heads/main/umbrel-app/public/2.png
