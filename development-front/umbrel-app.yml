@@ -16,7 +16,7 @@ description: >-
   robust tools while supporting the Lightning Network and related technologies.
 developer: LaWallet
 dependencies:
-  - development-gateway
+  - development-core
 website: https://github.com/lawalletio/test-environment
 repo: https://github.com/lawalletio/test-environment
 support: https://github.com/lawalletio/test-environment/issues
