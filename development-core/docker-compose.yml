@@ -3,7 +3,7 @@ version: "3.8"
 services:
   app_proxy:
     environment:
-      APP_HOST: development-ledger_app_1
+      APP_HOST: development-core_app_1
       APP_PORT: 8000
       PROXY_AUTH_ADD: "false"
 
