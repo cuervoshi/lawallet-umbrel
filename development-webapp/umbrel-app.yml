@@ -3,24 +3,16 @@ id: development-webapp
 category: Development
 name: LaWallet Web App
 version: "0.5.0"
-tagline: Modular Bitcoin and Lightning Network App
+tagline: LaWallet Frontend
 description: >-
-  LaWallet is a modular application composed of multiple microservices
-  designed to provide advanced functionality for interacting with Bitcoin and
-  the Lightning Network. It includes services for transaction management,
-  Lightning node connectivity, integration with Nostr, and wallet and account
-  management.
-
-
-  Built for scalability and flexibility, LaWallet enables users to access
-  robust tools while supporting the Lightning Network and related technologies.
-developer: LaWallet
+  LaWallet front end interface
+developer: La Crypta
 dependencies:
   - development-core
   - development-lightning
-website: https://github.com/lawalletio/test-environment
-repo: https://github.com/lawalletio/test-environment
-support: https://github.com/lawalletio/test-environment/issues
+website: https://lawallet.io
+repo: https://github.com/lawalletio/lawallet-web
+support: https://t.me/lacryptaok
 icon: https://raw.githubusercontent.com/lawalletio/ledger/f5e220a5cda91c805ed97a567ae9bbc8eb3169e6/umbrel-app/public/icon.svg
 port: 8001
 gallery:
